@@ -13,11 +13,9 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 import datetime
 
-
 # client = pymongo.MongoClient("mongodb://localhost:27017/")
 # db = client.ioctest  # Select the database
 # ioc = db.ioc
-
 
 
 from app.models import *
@@ -28,7 +26,23 @@ def index(request):
     user_tweets = Tweet.objects.filter(date__gt=datetime.datetime.strptime("2021-12-25", "%Y-%m-%d"),
                                        date__lt=datetime.datetime.strptime("2021-12-30", "%Y-%m-%d"))
 
-    return render(request, "index.html")
+    _temp = Dashboard.objects.filter(type="iocCounts").order_by("-date")[0]
+    counts = _temp.data[0]
+
+    counts_daily = Dashboard.objects.filter(type="daily").order_by("-date")[0].data
+    counts_monthly = Dashboard.objects.filter(type="monthly").order_by("-date")[0].data
+
+
+    query = [{"$match": {"type": "iocCounts"}},
+             {"$sort": {"date": 1}},
+             {"$limit": 1}, ]
+
+    context = {
+        'counts': counts, 'counts_weekly':counts_daily,
+        'counts_monthly':counts_monthly
+    }
+
+    return render(request, "index.html",context)
 
 
 @login_required(login_url="/login/")
@@ -69,14 +83,12 @@ def pages(request):
 
 
 @login_required(login_url="/login/")
-def tables(request):
+def entries(request):
     object_list = Tweet.objects.filter(date__gt=datetime.datetime.now() - datetime.timedelta(days=50),
                                        date__lt=datetime.datetime.now()).order_by('date')
 
-
-
     paginator = Paginator(object_list, 10)
-    page = request.GET.get('page',1)
+    page = request.GET.get('page', 1)
     try:
         page_obj = paginator.page(page)
     except PageNotAnInteger:
@@ -93,4 +105,3 @@ def tables(request):
     return render(request,
                   "tables.html",
                   context)
-

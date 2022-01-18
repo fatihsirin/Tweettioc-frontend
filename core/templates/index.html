@@ -3,7 +3,27 @@
 {% block title %} Dashboard {% endblock %} 
 
 <!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}
+<script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+<style type="text/css">
+  #daily {
+  width: 100%;
+  height: 100%;
+}
+   #totaliocs {
+  width: 100%;
+  height: 100%;
+}
+   #months{
+  width: 100%;
+  height: 100%;
+}
+
+</style>
+
+{% endblock stylesheets %}
 
 {% block content %}
 
@@ -14,39 +34,14 @@
           <div class="card-header ">
             <div class="row">
               <div class="col-sm-6 text-left">
-                <h5 class="card-category">Total Shipments</h5>
-                <h2 class="card-title">Performance</h2>
-              </div>
-              <div class="col-sm-6">
-                <div class="btn-group btn-group-toggle float-right" data-toggle="buttons">
-                  <label class="btn btn-sm btn-primary btn-simple active" id="0">
-                    <input type="radio" name="options" checked>
-                    <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">Accounts</span>
-                    <span class="d-block d-sm-none">
-                      <i class="tim-icons icon-single-02"></i>
-                    </span>
-                  </label>
-                  <label class="btn btn-sm btn-primary btn-simple" id="1">
-                    <input type="radio" class="d-none d-sm-none" name="options">
-                    <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">Purchases</span>
-                    <span class="d-block d-sm-none">
-                      <i class="tim-icons icon-gift-2"></i>
-                    </span>
-                  </label>
-                  <label class="btn btn-sm btn-primary btn-simple" id="2">
-                    <input type="radio" class="d-none" name="options">
-                    <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">Sessions</span>
-                    <span class="d-block d-sm-none">
-                      <i class="tim-icons icon-tap-02"></i>
-                    </span>
-                  </label>
-                </div>
+                <h5 class="card-category"></h5>
+                <h2 class="card-title">IOC Counts</h2>
               </div>
             </div>
           </div>
           <div class="card-body">
             <div class="chart-area">
-              <canvas id="chartBig1"></canvas>
+              <div id="totaliocs"></div>
             </div>
           </div>
         </div>
@@ -54,46 +49,33 @@
 
     </div>
     <div class="row">
-      <div class="col-lg-4">
-        <div class="card card-chart">
-          <div class="card-header">
-            <h5 class="card-category">Total Shipments</h5>
-            <h3 class="card-title"><i class="tim-icons icon-bell-55 text-primary"></i> 763,215</h3>
+          <div class="col-lg-6 col-lg-6">
+              <div class="card card-chart">
+              <div class="card-header ">
+                <h5 class="card-category">Total {{ totalCount }}</h5>
+                <h3 class="card-title"><i class="tim-icons con-components text-info "></i> Daily Entries</h3>
+              </div>
+              <div class="card-body ">
+                <div class="chart-area">
+                  <div id="daily"></div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="card-body">
-            <div class="chart-area">
-              <canvas id="chartLinePurple"></canvas>
+          <div class="col-lg-6 col-lg-6">
+                  <div class="card card-chart">
+              <div class="card-header ">
+                <h5 class="card-category">Total {{ totalCount }}</h5>
+                <h3 class="card-title"><i class="tim-icons con-components text-info "></i> Monthly Entries</h3>
+              </div>
+              <div class="card-body ">
+                <div class="chart-area">
+                  <div id="months"></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="col-lg-4">
-        <div class="card card-chart">
-          <div class="card-header">
-            <h5 class="card-category">Daily Sales</h5>
-            <h3 class="card-title"><i class="tim-icons icon-delivery-fast text-info"></i> 3,500€</h3>
-          </div>
-          <div class="card-body">
-            <div class="chart-area">
-              <canvas id="CountryChart"></canvas>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-4">
-        <div class="card card-chart">
-          <div class="card-header">
-            <h5 class="card-category">Completed Tasks</h5>
-            <h3 class="card-title"><i class="tim-icons icon-send text-success"></i> 12,100K</h3>
-          </div>
-          <div class="card-body">
-            <div class="chart-area">
-              <canvas id="chartLineGreen"></canvas>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
     <div class="row">
       <div class="col-lg-6 col-md-12">
         <div class="card card-tasks">
@@ -383,12 +365,368 @@
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
 
-  <script>
-    $(document).ready(function() {
-      // Javascript method's body can be found in assets/js/demos.js
-      demo.initDashboardPageCharts();
 
+<!-- Total IOC Types Counts -->
+<script>
+am5.ready(function() {
+
+// Create root element
+// https://www.amcharts.com/docs/v5/getting-started/#Root_element
+var root = am5.Root.new("totaliocs");
+
+
+// Set themes
+// https://www.amcharts.com/docs/v5/concepts/themes/
+root.setThemes([
+  am5themes_Animated.new(root)
+]);
+
+
+// Create chart
+// https://www.amcharts.com/docs/v5/charts/xy-chart/
+var chart = root.container.children.push(am5xy.XYChart.new(root, {
+  panX: true,
+  panY: true,
+  wheelX: "panX",
+  wheelY: "zoomX"
+}));
+
+// Add cursor
+// https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
+
+
+// Create axes
+// https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+var xRenderer = am5xy.AxisRendererX.new(root, { minGridDistance: 30 });
+xRenderer.labels.template.setAll({
+  rotation: 0,
+  centerY: am5.p50,
+  centerX: am5.p100,
+  paddingRight: 15
+});
+
+var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
+  maxDeviation: 0.3,
+  categoryField: "country",
+  renderer: xRenderer,
+  tooltip: am5.Tooltip.new(root, {})
+}));
+
+var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
+  maxDeviation: 0.3,
+  renderer: am5xy.AxisRendererY.new(root, {})
+}));
+
+
+// Create series
+// https://www.amcharts.com/docs/v5/charts/xy-chart/series/
+var series = chart.series.push(am5xy.ColumnSeries.new(root, {
+  name: "Series 1",
+  xAxis: xAxis,
+  yAxis: yAxis,
+  valueYField: "value",
+  sequencedInterpolation: true,
+  categoryXField: "country",
+  tooltip: am5.Tooltip.new(root, {
+    labelText:"{valueY}"
+  })
+}));
+
+series.columns.template.setAll({ cornerRadiusTL: 5, cornerRadiusTR: 5 });
+series.columns.template.adapters.add("fill", (fill, target) => {
+  return chart.get("colors").getIndex(series.columns.indexOf(target));
+});
+
+series.columns.template.adapters.add("stroke", (stroke, target) => {
+  return chart.get("colors").getIndex(series.columns.indexOf(target));
+});
+
+
+
+
+// Set data
+var data =[
+     {% for key, values in counts.items %}
+    {
+      country: '{{ key }}',
+      value: {{ values }}
+    },
+    {% endfor %}
+]
+
+xAxis.data.setAll(data);
+series.data.setAll(data);
+
+
+// Make stuff animate on load
+// https://www.amcharts.com/docs/v5/concepts/animations/
+series.appear(1000);
+chart.appear(1000, 100);
+
+}); // end am5.ready()
+</script>
+
+<!-- Week Days IOC Types Counts -->
+<script>
+am5.ready(function() {
+
+// Create root element
+// https://www.amcharts.com/docs/v5/getting-started/#Root_element
+var root = am5.Root.new("daily");
+
+
+// Set themes
+// https://www.amcharts.com/docs/v5/concepts/themes/
+root.setThemes([
+  am5themes_Animated.new(root)
+]);
+
+
+// Create chart
+// https://www.amcharts.com/docs/v5/charts/xy-chart/
+var chart = root.container.children.push(am5xy.XYChart.new(root, {
+  panX: true,
+  panY: true,
+  wheelX: "panX",
+  wheelY: "zoomX"
+}));
+
+chart.get("colors").set("step", 3);
+
+
+// Add cursor
+// https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
+var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {}));
+cursor.lineY.set("visible", false);
+
+
+// Create axes
+// https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+var xAxis = chart.xAxes.push(am5xy.DateAxis.new(root, {
+  maxDeviation: 0.3,
+  baseInterval: {
+    timeUnit: "day",
+    count: 1
+  },
+  renderer: am5xy.AxisRendererX.new(root, {}),
+  tooltip: am5.Tooltip.new(root, {})
+}));
+
+var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
+  maxDeviation: 0.3,
+  renderer: am5xy.AxisRendererY.new(root, {})
+}));
+
+
+// Create series
+// https://www.amcharts.com/docs/v5/charts/xy-chart/series/
+var series = chart.series.push(am5xy.LineSeries.new(root, {
+  name: "Series 1",
+  xAxis: xAxis,
+  yAxis: yAxis,
+  valueYField: "value",
+  valueXField: "date",
+  tooltip: am5.Tooltip.new(root, {
+    labelText: "{valueY}"
+  })
+}));
+series.strokes.template.setAll({
+  strokeWidth: 2,
+  strokeDasharray: [3, 3]
+});
+
+// Create animating bullet by adding two circles in a bullet container and
+// animating radius and opacity of one of them.
+series.bullets.push(function(root, series, dataItem) {
+  if (dataItem.dataContext.bullet) {
+    var container = am5.Container.new(root, {});
+    var circle0 = container.children.push(am5.Circle.new(root, {
+      radius: 5,
+      fill: am5.color(0xff0000)
+    }));
+    var circle1 = container.children.push(am5.Circle.new(root, {
+      radius: 5,
+      fill: am5.color(0xff0000)
+    }));
+
+    circle1.animate({
+      key: "radius",
+      to: 20,
+      duration: 1000,
+      easing: am5.ease.out(am5.ease.cubic),
+      loops: Infinity
     });
-  </script>
+    circle1.animate({
+      key: "opacity",
+      to: 0,
+      from: 1,
+      duration: 1000,
+      easing: am5.ease.out(am5.ease.cubic),
+      loops: Infinity
+    });
+
+    return am5.Bullet.new(root, {
+      sprite: container
+    })
+  }
+})
+
+
+// Set data counts_weekly
+var data =[
+    {% for array in counts_weekly %}
+        {
+          date: Date.parse('{{ array.name }}'),
+          value: {{ array.count }},
+          bullet: true
+        },
+    {% endfor %}
+]
+
+
+
+series.data.setAll(data);
+
+
+// Make stuff animate on load
+// https://www.amcharts.com/docs/v5/concepts/animations/
+series.appear(1000);
+chart.appear(1000, 100);
+
+}); // end am5.ready()
+</script>
+
+<!-- Week Days IOC Types Counts -->
+<script>
+am5.ready(function() {
+
+// Create root element
+// https://www.amcharts.com/docs/v5/getting-started/#Root_element
+var root = am5.Root.new("months");
+
+
+// Set themes
+// https://www.amcharts.com/docs/v5/concepts/themes/
+root.setThemes([
+  am5themes_Animated.new(root)
+]);
+
+
+// Create chart
+// https://www.amcharts.com/docs/v5/charts/xy-chart/
+var chart = root.container.children.push(am5xy.XYChart.new(root, {
+  panX: true,
+  panY: true,
+  wheelX: "panX",
+  wheelY: "zoomX"
+}));
+
+chart.get("colors").set("step", 3);
+
+
+// Add cursor
+// https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
+var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {}));
+cursor.lineY.set("visible", false);
+
+
+// Create axes
+// https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+var xAxis = chart.xAxes.push(am5xy.DateAxis.new(root, {
+  maxDeviation: 0.3,
+  baseInterval: {
+    timeUnit: "month",
+    count: 1
+  },
+  renderer: am5xy.AxisRendererX.new(root, {}),
+  tooltip: am5.Tooltip.new(root, {})
+}));
+
+var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
+  maxDeviation: 0.3,
+  renderer: am5xy.AxisRendererY.new(root, {})
+}));
+
+
+// Create series
+// https://www.amcharts.com/docs/v5/charts/xy-chart/series/
+var series = chart.series.push(am5xy.LineSeries.new(root, {
+  name: "Series 1",
+  xAxis: xAxis,
+  yAxis: yAxis,
+  valueYField: "value",
+  valueXField: "date",
+  tooltip: am5.Tooltip.new(root, {
+    labelText: "{valueY}"
+  })
+}));
+series.strokes.template.setAll({
+  strokeWidth: 2,
+  strokeDasharray: [3, 3]
+});
+
+// Create animating bullet by adding two circles in a bullet container and
+// animating radius and opacity of one of them.
+series.bullets.push(function(root, series, dataItem) {
+  if (dataItem.dataContext.bullet) {
+    var container = am5.Container.new(root, {});
+    var circle0 = container.children.push(am5.Circle.new(root, {
+      radius: 5,
+      fill: am5.color(0xff0000)
+    }));
+    var circle1 = container.children.push(am5.Circle.new(root, {
+      radius: 5,
+      fill: am5.color(0xff0000)
+    }));
+
+    circle1.animate({
+      key: "radius",
+      to: 20,
+      duration: 1000,
+      easing: am5.ease.out(am5.ease.cubic),
+      loops: Infinity
+    });
+    circle1.animate({
+      key: "opacity",
+      to: 0,
+      from: 1,
+      duration: 1000,
+      easing: am5.ease.out(am5.ease.cubic),
+      loops: Infinity
+    });
+
+    return am5.Bullet.new(root, {
+      sprite: container
+    })
+  }
+})
+
+
+// Set data counts_monthly
+var data =[
+    {% for array in counts_monthly %}
+        {
+          date: new Date({{ array.name.year }},{{ array.name.month }},1).getTime(),
+          value: {{ array.count }},
+          bullet: true
+        },
+    {% endfor %}
+]
+
+
+
+
+series.data.setAll(data);
+
+
+// Make stuff animate on load
+// https://www.amcharts.com/docs/v5/concepts/animations/
+series.appear(1000);
+chart.appear(1000, 100);
+
+}); // end am5.ready()
+</script>
+
+
 
 {% endblock javascripts %}

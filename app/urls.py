@@ -13,5 +13,5 @@ urlpatterns = [
 
     # The home page
     path('', views.index, name='home'),
-    path('tables',views.tables, name="tables")
+    path('entries',views.entries, name="entries")
 ]

@@ -38,3 +38,14 @@ class Tweet(djongo_models.Model):
     class Meta:
         managed = True
         db_table = "tweets"
+
+
+class Dashboard(djongo_models.Model):
+    id = djongo_models.BigIntegerField(primary_key=True, db_column="_id")
+    type = djongo_models.TextField(db_column="type")
+    data = ArrayField(models.TextField(), db_column="data")
+    date = djongo_models.DateTimeField(db_column="date")
+
+    class Meta:
+        managed = True
+        db_table = "dashboards"
