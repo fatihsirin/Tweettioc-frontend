@@ -35,6 +35,8 @@ class Tweet(djongo_models.Model):
     hashtags = ArrayField(models.TextField(), db_column="hashtags")
     images = ArrayField(models.TextField(), db_column="images")
 
+    objects = djongo_models.DjongoManager()
+
     class Meta:
         managed = True
         db_table = "tweets"
@@ -43,8 +45,11 @@ class Tweet(djongo_models.Model):
 class Dashboard(djongo_models.Model):
     id = djongo_models.BigIntegerField(primary_key=True, db_column="_id")
     type = djongo_models.TextField(db_column="type")
+    totalcount = djongo_models.BigIntegerField(db_column="totalcount")
     data = ArrayField(models.TextField(), db_column="data")
     date = djongo_models.DateTimeField(db_column="date")
+
+    objects = djongo_models.DjongoManager()
 
     class Meta:
         managed = True

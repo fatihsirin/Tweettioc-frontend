@@ -8,7 +8,7 @@ import os
 from decouple import config
 from unipath import Path
 import dj_database_url
-import mongoengine
+
 
 
 import warnings
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'app',  # Enable the inner app
     'djongo.dynamic_formsets.apps.DynamicFormsetsConfig',
+    'categories',
 ]
 
 MIDDLEWARE = [
@@ -56,12 +57,16 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'core.urls'
 LOGIN_REDIRECT_URL = "home"  # Route defined in app/urls.py
 LOGOUT_REDIRECT_URL = "home"  # Route defined in app/urls.py
-TEMPLATE_DIR = os.path.join(BASE_DIR, "core/templates")  # ROOT dir for templates
+TEMPLATE_DIR = [
+    os.path.join(BASE_DIR, "core/templates"),
+    os.path.join(BASE_DIR, "app/templates"),
+    os.path.join(BASE_DIR, "categories/templates"),
+]  # ROOT dir for templates
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [TEMPLATE_DIR],
+        'DIRS': TEMPLATE_DIR,
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

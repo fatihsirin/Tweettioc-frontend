@@ -25,5 +25,9 @@
   "contributors": [
     "AppSeed Support <support@appseed.us>"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "datatables.net": "^1.11.3",
+    "datatables.net-dt": "^1.11.3"
+  }
 }

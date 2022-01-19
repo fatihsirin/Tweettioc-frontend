@@ -10,6 +10,7 @@ from django.template import loader
 from django.http import HttpResponse
 from django import template
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.http import JsonResponse
 
 import datetime
 
@@ -29,25 +30,25 @@ def index(request):
     daily_hashtags = Dashboard.objects.filter(type="hashtagsDaily").order_by("-date")[0].data
     all_hashtags = Dashboard.objects.filter(type="hashtagsAll").order_by("-date")[0].data
 
-    object_list = Tweet.objects.filter(date__gt=datetime.datetime.now() - datetime.timedelta(days=7),
-                                       date__lt=datetime.datetime.now()).order_by('date')
+    object_list = Tweet.objects.filter(date__gt=datetime.datetime.now() - datetime.timedelta(days=1),
+                                       date__lt=datetime.datetime.now()).order_by('-date')
+    object_list = list(object_list)
 
-    paginator = Paginator(object_list, 5)
-    page = request.GET.get('page', 1)
-    try:
-        page_obj = paginator.page(page)
-    except PageNotAnInteger:
-        page_obj = paginator.page(1)
-    except EmptyPage:
-        page_obj = paginator.page(paginator.num_pages)
-
-    page_range = paginator.get_elided_page_range(page, on_each_side=3, on_ends=3)
+    # paginator = Paginator(object_list, 5)
+    # page = request.GET.get('page', 1)
+    # try:
+    #     page_obj = paginator.page(page)
+    # except PageNotAnInteger:
+    #     page_obj = paginator.page(1)
+    # except EmptyPage:
+    #     page_obj = paginator.page(paginator.num_pages)
+    #
+    # page_range = paginator.get_elided_page_range(page, on_each_side=3, on_ends=3)
 
     context = {
         'iocCounts': iocCounts, 'counts_weekly': counts_daily,
         'counts_monthly': counts_monthly, 'daily_hashtags': daily_hashtags,
-        'all_hashtags': all_hashtags, 'page_obj': page_obj, 'page_range': page_range,
-        'page': page, 'paginator': paginator,
+        'all_hashtags': all_hashtags,
     }
 
     return render(request, "index.html", locals())
@@ -87,15 +88,17 @@ def pages(request):
 #             for x in ioc.find({name: {"$regex": ".+"}}):
 #                 counts[name] += len(x[name])
 #
-#     return render(request, "tables.html",{'iocs': testIOC})
+#     return render(request, "tablessss.html",{'iocs': testIOC})
 
 
 @login_required(login_url="/login/")
 def entries(request):
+
     object_list = Tweet.objects.filter(date__gt=datetime.datetime.now() - datetime.timedelta(days=50),
                                        date__lt=datetime.datetime.now()).order_by('date')
 
-    paginator = Paginator(object_list, 10)
+
+    paginator = Paginator(object_list, 1000)
     page = request.GET.get('page', 1)
     try:
         page_obj = paginator.page(page)
