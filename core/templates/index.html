@@ -1,27 +1,30 @@
 {% extends "layouts/base.html" %}
 
-{% block title %} Dashboard {% endblock %} 
+{% block title %} Dashboard {% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}
-<script src="https://cdn.amcharts.com/lib/5/index.js"></script>
-<script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
-<script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
-<style type="text/css">
-  #daily {
-  width: 100%;
-  height: 100%;
-}
-   #totaliocs {
-  width: 100%;
-  height: 100%;
-}
-   #months{
-  width: 100%;
-  height: 100%;
-}
+    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/hierarchy.js"></script>
+    <style type="text/css">
+        #daily {
+            width: 100%;
+            height: 100%;
+        }
 
-</style>
+        #totaliocs {
+            width: 100%;
+            height: 100%;
+        }
+
+        #months {
+            width: 100%;
+            height: 100%;
+        }
+
+    </style>
 
 {% endblock stylesheets %}
 
@@ -29,336 +32,149 @@
 
     <div class="row">
 
-      <div class="col-12">
-        <div class="card card-chart">
-          <div class="card-header ">
-            <div class="row">
-              <div class="col-sm-6 text-left">
-                <h5 class="card-category"></h5>
-                <h2 class="card-title">IOC Counts</h2>
-              </div>
+        <div class="col-12">
+            <div class="card card-chart">
+                <div class="card-header ">
+                    <div class="row">
+                        <div class="col-sm-6 text-left">
+                            <h5 class="card-category"></h5>
+                            <h2 class="card-title">IOC Counts</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="chart-area">
+                        <div id="totaliocs"></div>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="card-body">
-            <div class="chart-area">
-              <div id="totaliocs"></div>
-            </div>
-          </div>
         </div>
-      </div>
 
     </div>
     <div class="row">
-          <div class="col-lg-6 col-lg-6">
-              <div class="card card-chart">
-              <div class="card-header ">
-                <h5 class="card-category">Total {{ totalCount }}</h5>
-                <h3 class="card-title"><i class="tim-icons con-components text-info "></i> Daily Entries</h3>
-              </div>
-              <div class="card-body ">
-                <div class="chart-area">
-                  <div id="daily"></div>
+        <div class="col-lg-6 col-lg-6">
+            <div class="card card-chart">
+                <div class="card-header ">
+                    <h5 class="card-category">Total {{ totalCount }}</h5>
+                    <h3 class="card-title"><i class="tim-icons con-components text-info "></i> Daily Entries</h3>
                 </div>
-              </div>
+                <div class="card-body ">
+                    <div class="chart-area">
+                        <div id="daily"></div>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="col-lg-6 col-lg-6">
-                  <div class="card card-chart">
+        </div>
+        <div class="col-lg-6 col-lg-6">
+            <div class="card card-chart">
+                <div class="card-header ">
+                    <h5 class="card-category">Total {{ totalCount }}</h5>
+                    <h3 class="card-title"><i class="tim-icons con-components text-info "></i> Monthly Entries</h3>
+                </div>
+                <div class="card-body ">
+                    <div class="chart-area">
+                        <div id="months"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card card-chart" style="height: 600px;">
+                <div class="card-header ">
+                    <h3 class="card-title"><i class="tim-icons con-components text-info "></i> Daily Hashtags TreeMap
+                    </h3>
+                </div>
+                <div class="card-body ">
+                    <div class="chart-area">
+                        <div style="width: 100%;height: 500px;" id="daily_treemap"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+          <div class="col-lg-12">
+            <div class="card card-chart" style="height: 600px;">
               <div class="card-header ">
-                <h5 class="card-category">Total {{ totalCount }}</h5>
-                <h3 class="card-title"><i class="tim-icons con-components text-info "></i> Monthly Entries</h3>
+                <h3 class="card-title"><i class="tim-icons con-components text-info "></i> All Hashtags TreeMap</h3>
               </div>
               <div class="card-body ">
                 <div class="chart-area">
-                  <div id="months"></div>
+                  <div style="width: 100%;height: 500px;" id="all_tree"></div>
                 </div>
               </div>
             </div>
           </div>
         </div>
     <div class="row">
-      <div class="col-lg-6 col-md-12">
-        <div class="card card-tasks">
-          <div class="card-header ">
-            <h6 class="title d-inline">Tasks(5)</h6>
-            <p class="card-category d-inline">today</p>
-            <div class="dropdown">
-              <button type="button" class="btn btn-link dropdown-toggle btn-icon" data-toggle="dropdown">
-                <i class="tim-icons icon-settings-gear-63"></i>
-              </button>
-              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-                <a class="dropdown-item" href="#pablo">Action</a>
-                <a class="dropdown-item" href="#pablo">Another action</a>
-                <a class="dropdown-item" href="#pablo">Something else</a>
-              </div>
-            </div>
-          </div>
-          <div class="card-body ">
-            <div class="table-full-width table-responsive">
-              <table class="table">
-                <tbody>
-                  <tr>
-                    <td>
-                      <div class="form-check">
-                        <label class="form-check-label">
-                          <input class="form-check-input" type="checkbox" value="">
-                          <span class="form-check-sign">
-                            <span class="check"></span>
-                          </span>
-                        </label>
-                      </div>
-                    </td>
-                    <td>
-                      <p class="title">Update the Documentation</p>
-                      <p class="text-muted">Dwuamish Head, Seattle, WA 8:47 AM</p>
-                    </td>
-                    <td class="td-actions text-right">
-                      <button type="button" rel="tooltip" title="" class="btn btn-link" data-original-title="Edit Task">
-                        <i class="tim-icons icon-pencil"></i>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="form-check">
-                        <label class="form-check-label">
-                          <input class="form-check-input" type="checkbox" value="" checked="">
-                          <span class="form-check-sign">
-                            <span class="check"></span>
-                          </span>
-                        </label>
-                      </div>
-                    </td>
-                    <td>
-                      <p class="title">GDPR Compliance</p>
-                      <p class="text-muted">The GDPR is a regulation that requires businesses to protect the personal data and privacy of Europe citizens for transactions that occur within EU member states.</p>
-                    </td>
-                    <td class="td-actions text-right">
-                      <button type="button" rel="tooltip" title="" class="btn btn-link" data-original-title="Edit Task">
-                        <i class="tim-icons icon-pencil"></i>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="form-check">
-                        <label class="form-check-label">
-                          <input class="form-check-input" type="checkbox" value="">
-                          <span class="form-check-sign">
-                            <span class="check"></span>
-                          </span>
-                        </label>
-                      </div>
-                    </td>
-                    <td>
-                      <p class="title">Solve the issues</p>
-                      <p class="text-muted">Fifty percent of all respondents said they would be more likely to shop at a company </p>
-                    </td>
-                    <td class="td-actions text-right">
-                      <button type="button" rel="tooltip" title="" class="btn btn-link" data-original-title="Edit Task">
-                        <i class="tim-icons icon-pencil"></i>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="form-check">
-                        <label class="form-check-label">
-                          <input class="form-check-input" type="checkbox" value="">
-                          <span class="form-check-sign">
-                            <span class="check"></span>
-                          </span>
-                        </label>
-                      </div>
-                    </td>
-                    <td>
-                      <p class="title">Release v2.0.0</p>
-                      <p class="text-muted">Ra Ave SW, Seattle, WA 98116, SUA 11:19 AM</p>
-                    </td>
-                    <td class="td-actions text-right">
-                      <button type="button" rel="tooltip" title="" class="btn btn-link" data-original-title="Edit Task">
-                        <i class="tim-icons icon-pencil"></i>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="form-check">
-                        <label class="form-check-label">
-                          <input class="form-check-input" type="checkbox" value="">
-                          <span class="form-check-sign">
-                            <span class="check"></span>
-                          </span>
-                        </label>
-                      </div>
-                    </td>
-                    <td>
-                      <p class="title">Export the processed files</p>
-                      <p class="text-muted">The report also shows that consumers will not easily forgive a company once a breach exposing their personal data occurs. </p>
-                    </td>
-                    <td class="td-actions text-right">
-                      <button type="button" rel="tooltip" title="" class="btn btn-link" data-original-title="Edit Task">
-                        <i class="tim-icons icon-pencil"></i>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="form-check">
-                        <label class="form-check-label">
-                          <input class="form-check-input" type="checkbox" value="">
-                          <span class="form-check-sign">
-                            <span class="check"></span>
-                          </span>
-                        </label>
-                      </div>
-                    </td>
-                    <td>
-                      <p class="title">Arival at export process</p>
-                      <p class="text-muted">Capitol Hill, Seattle, WA 12:34 AM</p>
-                    </td>
-                    <td class="td-actions text-right">
-                      <button type="button" rel="tooltip" title="" class="btn btn-link" data-original-title="Edit Task">
-                        <i class="tim-icons icon-pencil"></i>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-6 col-md-12">
-        <div class="card ">
-          <div class="card-header">
-            <h4 class="card-title"> Simple Table</h4>
-          </div>
-          <div class="card-body">
+   <div class="col-lg-12 col-md-12">
+      <div class="card ">
+         <div class="card-header">
+            <h4 class="card-title"> Last 5 Entries </h4>
+         </div>
+         <div class="card-body">
             <div class="table-responsive">
-              <table class="table tablesorter " id="">
-                <thead class=" text-primary">
-                  <tr>
-                    <th>
-                      Name
-                    </th>
-                    <th>
-                      Country
-                    </th>
-                    <th>
-                      City
-                    </th>
-                    <th class="text-center">
-                      Salary
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>
-                      Dakota Rice
-                    </td>
-                    <td>
-                      Niger
-                    </td>
-                    <td>
-                      Oud-Turnhout
-                    </td>
-                    <td class="text-center">
-                      $36,738
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Minerva Hooper
-                    </td>
-                    <td>
-                      Curaçao
-                    </td>
-                    <td>
-                      Sinaai-Waas
-                    </td>
-                    <td class="text-center">
-                      $23,789
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Sage Rodriguez
-                    </td>
-                    <td>
-                      Netherlands
-                    </td>
-                    <td>
-                      Baileux
-                    </td>
-                    <td class="text-center">
-                      $56,142
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Philip Chaney
-                    </td>
-                    <td>
-                      Korea, South
-                    </td>
-                    <td>
-                      Overland Park
-                    </td>
-                    <td class="text-center">
-                      $38,735
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Doris Greene
-                    </td>
-                    <td>
-                      Malawi
-                    </td>
-                    <td>
-                      Feldkirchen in Kärnten
-                    </td>
-                    <td class="text-center">
-                      $63,542
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Mason Porter
-                    </td>
-                    <td>
-                      Chile
-                    </td>
-                    <td>
-                      Gloucester
-                    </td>
-                    <td class="text-center">
-                      $78,615
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Jon Porter
-                    </td>
-                    <td>
-                      Portugal
-                    </td>
-                    <td>
-                      Gloucester
-                    </td>
-                    <td class="text-center">
-                      $98,615
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+               <table class="table tablesorter " id="">
+                  <thead class="">
+                     <th>ID</th>
+                     <th>User</th>
+                     <th>Tweet</th>
+                     <th>Date</th>
+                  </thead>
+                  <tbody>
+                     {% for obj in page_obj %}
+                     <tr>
+                        <td>{{loop.index}}</td>
+                        <td>{{ obj.username }}</td>
+                        <td> <a href="./list/id/">{{ obj.text }}</a> </td>
+                        <td>{{ obj.date }}</td>
+                     </tr>
+                     {% endfor %}
+                  </tbody>
+               </table>
             </div>
-          </div>
-        </div>
+            <nav aria-label="Page navigation example">
+               <ul class="pagination">
+                  <li class="page-item">
+                     {% if page_obj.has_previous %}
+                     <a class="page-link" href="?page={{  page_obj.previous_page_number }}" aria-label="Previous">
+                     <span aria-hidden="true">&laquo;</span>
+                     </a>
+                     {% endif %}
+                  </li>
+                  {% for i in page_range %}
+                  {% if page_obj.number == i %}
+                  <li class="page-item active" aria-current="page">
+                     <a class="page-link" href="?page={{ i }}">{{ i }} <span class="sr-only">(current)</span></a>
+                  </li>
+                  {% elif i == '…' %}
+                  <li class="page-item"><a class="page-link" href="?page=#">{{ i }}</a></li>
+                  {% else %}
+                  <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                  {% endif %}
+                  {% endfor %}
+                  {% if page_obj.has_next %}
+                  <a class="icon item" href ="?page={{ page_obj.next_page_number }}">
+                  <i class="right chevron icon"></i>
+                  </a>
+                  {% endif %}
+                  <li class="page-item">
+                     {% if page_obj.has_next %}
+                     <a class="page-link" href="?page={{  page_obj.next_page_number }}" aria-label="Previous">
+                     <span aria-hidden="true">&laquo;</span>
+                     </a>
+                     {% endif %}
+                  </li>
+                  </a>
+                  </li>
+               </ul>
+            </nav>
+         </div>
       </div>
-    </div>
+   </div>
+</div>
 
 {% endblock content %}
 
@@ -366,30 +182,30 @@
 {% block javascripts %}
 
 
-<!-- Total IOC Types Counts -->
-<script>
-am5.ready(function() {
+    <!-- Total IOC Types Counts -->
+    <script>
+        am5.ready(function () {
 
 // Create root element
 // https://www.amcharts.com/docs/v5/getting-started/#Root_element
-var root = am5.Root.new("totaliocs");
+            var root = am5.Root.new("totaliocs");
 
 
 // Set themes
 // https://www.amcharts.com/docs/v5/concepts/themes/
-root.setThemes([
-  am5themes_Animated.new(root)
-]);
+            root.setThemes([
+                am5themes_Animated.new(root)
+            ]);
 
 
 // Create chart
 // https://www.amcharts.com/docs/v5/charts/xy-chart/
-var chart = root.container.children.push(am5xy.XYChart.new(root, {
-  panX: true,
-  panY: true,
-  wheelX: "panX",
-  wheelY: "zoomX"
-}));
+            var chart = root.container.children.push(am5xy.XYChart.new(root, {
+                panX: true,
+                panY: true,
+                wheelX: "panX",
+                wheelY: "zoomX"
+            }));
 
 // Add cursor
 // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
@@ -397,336 +213,481 @@ var chart = root.container.children.push(am5xy.XYChart.new(root, {
 
 // Create axes
 // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
-var xRenderer = am5xy.AxisRendererX.new(root, { minGridDistance: 30 });
-xRenderer.labels.template.setAll({
-  rotation: 0,
-  centerY: am5.p50,
-  centerX: am5.p100,
-  paddingRight: 15
-});
+            var xRenderer = am5xy.AxisRendererX.new(root, {minGridDistance: 30});
+            xRenderer.labels.template.setAll({
+                rotation: 0,
+                centerY: am5.p50,
+                centerX: am5.p100,
+                paddingRight: 15
+            });
 
-var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
-  maxDeviation: 0.3,
-  categoryField: "country",
-  renderer: xRenderer,
-  tooltip: am5.Tooltip.new(root, {})
-}));
+            var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
+                maxDeviation: 0.3,
+                categoryField: "country",
+                renderer: xRenderer,
+                tooltip: am5.Tooltip.new(root, {})
+            }));
 
-var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
-  maxDeviation: 0.3,
-  renderer: am5xy.AxisRendererY.new(root, {})
-}));
+            var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
+                maxDeviation: 0.3,
+                renderer: am5xy.AxisRendererY.new(root, {})
+            }));
 
 
 // Create series
 // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
-var series = chart.series.push(am5xy.ColumnSeries.new(root, {
-  name: "Series 1",
-  xAxis: xAxis,
-  yAxis: yAxis,
-  valueYField: "value",
-  sequencedInterpolation: true,
-  categoryXField: "country",
-  tooltip: am5.Tooltip.new(root, {
-    labelText:"{valueY}"
-  })
-}));
+            var series = chart.series.push(am5xy.ColumnSeries.new(root, {
+                name: "Series 1",
+                xAxis: xAxis,
+                yAxis: yAxis,
+                valueYField: "value",
+                sequencedInterpolation: true,
+                categoryXField: "country",
+                tooltip: am5.Tooltip.new(root, {
+                    labelText: "{valueY}"
+                })
+            }));
 
-series.columns.template.setAll({ cornerRadiusTL: 5, cornerRadiusTR: 5 });
-series.columns.template.adapters.add("fill", (fill, target) => {
-  return chart.get("colors").getIndex(series.columns.indexOf(target));
-});
+            series.columns.template.setAll({cornerRadiusTL: 5, cornerRadiusTR: 5});
+            series.columns.template.adapters.add("fill", (fill, target) => {
+                return chart.get("colors").getIndex(series.columns.indexOf(target));
+            });
 
-series.columns.template.adapters.add("stroke", (stroke, target) => {
-  return chart.get("colors").getIndex(series.columns.indexOf(target));
-});
-
-
+            series.columns.template.adapters.add("stroke", (stroke, target) => {
+                return chart.get("colors").getIndex(series.columns.indexOf(target));
+            });
 
 
 // Set data
-var data =[
-     {% for key, values in counts.items %}
-    {
-      country: '{{ key }}',
-      value: {{ values }}
-    },
-    {% endfor %}
-]
+            var data = [
+                {% for key, values in iocCounts.items %}
+                    {
+                        country: '{{ key }}',
+                        value: {{ values }}
+                    },
+                {% endfor %}
+            ]
 
-xAxis.data.setAll(data);
-series.data.setAll(data);
-
-
-// Make stuff animate on load
-// https://www.amcharts.com/docs/v5/concepts/animations/
-series.appear(1000);
-chart.appear(1000, 100);
-
-}); // end am5.ready()
-</script>
-
-<!-- Week Days IOC Types Counts -->
-<script>
-am5.ready(function() {
-
-// Create root element
-// https://www.amcharts.com/docs/v5/getting-started/#Root_element
-var root = am5.Root.new("daily");
-
-
-// Set themes
-// https://www.amcharts.com/docs/v5/concepts/themes/
-root.setThemes([
-  am5themes_Animated.new(root)
-]);
-
-
-// Create chart
-// https://www.amcharts.com/docs/v5/charts/xy-chart/
-var chart = root.container.children.push(am5xy.XYChart.new(root, {
-  panX: true,
-  panY: true,
-  wheelX: "panX",
-  wheelY: "zoomX"
-}));
-
-chart.get("colors").set("step", 3);
-
-
-// Add cursor
-// https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
-var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {}));
-cursor.lineY.set("visible", false);
-
-
-// Create axes
-// https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
-var xAxis = chart.xAxes.push(am5xy.DateAxis.new(root, {
-  maxDeviation: 0.3,
-  baseInterval: {
-    timeUnit: "day",
-    count: 1
-  },
-  renderer: am5xy.AxisRendererX.new(root, {}),
-  tooltip: am5.Tooltip.new(root, {})
-}));
-
-var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
-  maxDeviation: 0.3,
-  renderer: am5xy.AxisRendererY.new(root, {})
-}));
-
-
-// Create series
-// https://www.amcharts.com/docs/v5/charts/xy-chart/series/
-var series = chart.series.push(am5xy.LineSeries.new(root, {
-  name: "Series 1",
-  xAxis: xAxis,
-  yAxis: yAxis,
-  valueYField: "value",
-  valueXField: "date",
-  tooltip: am5.Tooltip.new(root, {
-    labelText: "{valueY}"
-  })
-}));
-series.strokes.template.setAll({
-  strokeWidth: 2,
-  strokeDasharray: [3, 3]
-});
-
-// Create animating bullet by adding two circles in a bullet container and
-// animating radius and opacity of one of them.
-series.bullets.push(function(root, series, dataItem) {
-  if (dataItem.dataContext.bullet) {
-    var container = am5.Container.new(root, {});
-    var circle0 = container.children.push(am5.Circle.new(root, {
-      radius: 5,
-      fill: am5.color(0xff0000)
-    }));
-    var circle1 = container.children.push(am5.Circle.new(root, {
-      radius: 5,
-      fill: am5.color(0xff0000)
-    }));
-
-    circle1.animate({
-      key: "radius",
-      to: 20,
-      duration: 1000,
-      easing: am5.ease.out(am5.ease.cubic),
-      loops: Infinity
-    });
-    circle1.animate({
-      key: "opacity",
-      to: 0,
-      from: 1,
-      duration: 1000,
-      easing: am5.ease.out(am5.ease.cubic),
-      loops: Infinity
-    });
-
-    return am5.Bullet.new(root, {
-      sprite: container
-    })
-  }
-})
-
-
-// Set data counts_weekly
-var data =[
-    {% for array in counts_weekly %}
-        {
-          date: Date.parse('{{ array.name }}'),
-          value: {{ array.count }},
-          bullet: true
-        },
-    {% endfor %}
-]
-
-
-
-series.data.setAll(data);
+            xAxis.data.setAll(data);
+            series.data.setAll(data);
 
 
 // Make stuff animate on load
 // https://www.amcharts.com/docs/v5/concepts/animations/
-series.appear(1000);
-chart.appear(1000, 100);
+            series.appear(1000);
+            chart.appear(1000, 100);
 
-}); // end am5.ready()
-</script>
+        }); // end am5.ready()
+    </script>
 
-<!-- Week Days IOC Types Counts -->
-<script>
-am5.ready(function() {
+    <!-- Days IOC Counts -->
+    <script>
+        am5.ready(function () {
 
 // Create root element
 // https://www.amcharts.com/docs/v5/getting-started/#Root_element
-var root = am5.Root.new("months");
+            var root = am5.Root.new("daily");
 
 
 // Set themes
 // https://www.amcharts.com/docs/v5/concepts/themes/
-root.setThemes([
-  am5themes_Animated.new(root)
-]);
+            root.setThemes([
+                am5themes_Animated.new(root)
+            ]);
 
 
 // Create chart
 // https://www.amcharts.com/docs/v5/charts/xy-chart/
-var chart = root.container.children.push(am5xy.XYChart.new(root, {
-  panX: true,
-  panY: true,
-  wheelX: "panX",
-  wheelY: "zoomX"
-}));
+            var chart = root.container.children.push(am5xy.XYChart.new(root, {
+                panX: true,
+                panY: true,
+                wheelX: "panX",
+                wheelY: "zoomX"
+            }));
 
-chart.get("colors").set("step", 3);
+            chart.get("colors").set("step", 3);
 
 
 // Add cursor
 // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
-var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {}));
-cursor.lineY.set("visible", false);
+            var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {}));
+            cursor.lineY.set("visible", false);
 
 
 // Create axes
 // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
-var xAxis = chart.xAxes.push(am5xy.DateAxis.new(root, {
-  maxDeviation: 0.3,
-  baseInterval: {
-    timeUnit: "month",
-    count: 1
-  },
-  renderer: am5xy.AxisRendererX.new(root, {}),
-  tooltip: am5.Tooltip.new(root, {})
-}));
+            var xAxis = chart.xAxes.push(am5xy.DateAxis.new(root, {
+                maxDeviation: 0.3,
+                baseInterval: {
+                    timeUnit: "day",
+                    count: 1
+                },
+                renderer: am5xy.AxisRendererX.new(root, {}),
+                tooltip: am5.Tooltip.new(root, {})
+            }));
 
-var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
-  maxDeviation: 0.3,
-  renderer: am5xy.AxisRendererY.new(root, {})
-}));
+            var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
+                maxDeviation: 0.3,
+                renderer: am5xy.AxisRendererY.new(root, {})
+            }));
 
 
 // Create series
 // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
-var series = chart.series.push(am5xy.LineSeries.new(root, {
-  name: "Series 1",
-  xAxis: xAxis,
-  yAxis: yAxis,
-  valueYField: "value",
-  valueXField: "date",
-  tooltip: am5.Tooltip.new(root, {
-    labelText: "{valueY}"
-  })
-}));
-series.strokes.template.setAll({
-  strokeWidth: 2,
-  strokeDasharray: [3, 3]
-});
+            var series = chart.series.push(am5xy.LineSeries.new(root, {
+                name: "Series 1",
+                xAxis: xAxis,
+                yAxis: yAxis,
+                valueYField: "value",
+                valueXField: "date",
+                tooltip: am5.Tooltip.new(root, {
+                    labelText: "{valueY}"
+                })
+            }));
+            series.strokes.template.setAll({
+                strokeWidth: 2,
+                strokeDasharray: [3, 3]
+            });
 
 // Create animating bullet by adding two circles in a bullet container and
 // animating radius and opacity of one of them.
-series.bullets.push(function(root, series, dataItem) {
-  if (dataItem.dataContext.bullet) {
-    var container = am5.Container.new(root, {});
-    var circle0 = container.children.push(am5.Circle.new(root, {
-      radius: 5,
-      fill: am5.color(0xff0000)
-    }));
-    var circle1 = container.children.push(am5.Circle.new(root, {
-      radius: 5,
-      fill: am5.color(0xff0000)
-    }));
+            series.bullets.push(function (root, series, dataItem) {
+                if (dataItem.dataContext.bullet) {
+                    var container = am5.Container.new(root, {});
+                    var circle0 = container.children.push(am5.Circle.new(root, {
+                        radius: 5,
+                        fill: am5.color(0xff0000)
+                    }));
+                    var circle1 = container.children.push(am5.Circle.new(root, {
+                        radius: 5,
+                        fill: am5.color(0xff0000)
+                    }));
 
-    circle1.animate({
-      key: "radius",
-      to: 20,
-      duration: 1000,
-      easing: am5.ease.out(am5.ease.cubic),
-      loops: Infinity
-    });
-    circle1.animate({
-      key: "opacity",
-      to: 0,
-      from: 1,
-      duration: 1000,
-      easing: am5.ease.out(am5.ease.cubic),
-      loops: Infinity
-    });
+                    circle1.animate({
+                        key: "radius",
+                        to: 20,
+                        duration: 1000,
+                        easing: am5.ease.out(am5.ease.cubic),
+                        loops: Infinity
+                    });
+                    circle1.animate({
+                        key: "opacity",
+                        to: 0,
+                        from: 1,
+                        duration: 1000,
+                        easing: am5.ease.out(am5.ease.cubic),
+                        loops: Infinity
+                    });
 
-    return am5.Bullet.new(root, {
-      sprite: container
-    })
-  }
-})
+                    return am5.Bullet.new(root, {
+                        sprite: container
+                    })
+                }
+            })
+
+
+// Set data counts_daily
+            var data = [
+                {% for array in counts_daily %}
+                    {
+                        date: Date.parse('{{ array.name }}'),
+                        value: {{ array.count }},
+                        bullet: true
+                    },
+                {% endfor %}
+            ]
+
+
+            series.data.setAll(data);
+
+
+// Make stuff animate on load
+// https://www.amcharts.com/docs/v5/concepts/animations/
+            series.appear(1000);
+            chart.appear(1000, 100);
+
+        }); // end am5.ready()
+    </script>
+
+    <!-- Week Days IOC Counts -->
+    <script>
+        am5.ready(function () {
+
+// Create root element
+// https://www.amcharts.com/docs/v5/getting-started/#Root_element
+            var root = am5.Root.new("months");
+
+
+// Set themes
+// https://www.amcharts.com/docs/v5/concepts/themes/
+            root.setThemes([
+                am5themes_Animated.new(root)
+            ]);
+
+
+// Create chart
+// https://www.amcharts.com/docs/v5/charts/xy-chart/
+            var chart = root.container.children.push(am5xy.XYChart.new(root, {
+                panX: true,
+                panY: true,
+                wheelX: "panX",
+                wheelY: "zoomX"
+            }));
+
+            chart.get("colors").set("step", 3);
+
+
+// Add cursor
+// https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
+            var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {}));
+            cursor.lineY.set("visible", false);
+
+
+// Create axes
+// https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+            var xAxis = chart.xAxes.push(am5xy.DateAxis.new(root, {
+                maxDeviation: 0.3,
+                baseInterval: {
+                    timeUnit: "month",
+                    count: 1
+                },
+                renderer: am5xy.AxisRendererX.new(root, {}),
+                tooltip: am5.Tooltip.new(root, {})
+            }));
+
+            var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
+                maxDeviation: 0.3,
+                renderer: am5xy.AxisRendererY.new(root, {})
+            }));
+
+
+// Create series
+// https://www.amcharts.com/docs/v5/charts/xy-chart/series/
+            var series = chart.series.push(am5xy.LineSeries.new(root, {
+                name: "Series 1",
+                xAxis: xAxis,
+                yAxis: yAxis,
+                valueYField: "value",
+                valueXField: "date",
+                tooltip: am5.Tooltip.new(root, {
+                    labelText: "{valueY}"
+                })
+            }));
+            series.strokes.template.setAll({
+                strokeWidth: 2,
+                strokeDasharray: [3, 3]
+            });
+
+// Create animating bullet by adding two circles in a bullet container and
+// animating radius and opacity of one of them.
+            series.bullets.push(function (root, series, dataItem) {
+                if (dataItem.dataContext.bullet) {
+                    var container = am5.Container.new(root, {});
+                    var circle0 = container.children.push(am5.Circle.new(root, {
+                        radius: 5,
+                        fill: am5.color(0xff0000)
+                    }));
+                    var circle1 = container.children.push(am5.Circle.new(root, {
+                        radius: 5,
+                        fill: am5.color(0xff0000)
+                    }));
+
+                    circle1.animate({
+                        key: "radius",
+                        to: 20,
+                        duration: 1000,
+                        easing: am5.ease.out(am5.ease.cubic),
+                        loops: Infinity
+                    });
+                    circle1.animate({
+                        key: "opacity",
+                        to: 0,
+                        from: 1,
+                        duration: 1000,
+                        easing: am5.ease.out(am5.ease.cubic),
+                        loops: Infinity
+                    });
+
+                    return am5.Bullet.new(root, {
+                        sprite: container
+                    })
+                }
+            })
 
 
 // Set data counts_monthly
-var data =[
-    {% for array in counts_monthly %}
-        {
-          date: new Date({{ array.name.year }},{{ array.name.month }},1).getTime(),
-          value: {{ array.count }},
-          bullet: true
-        },
-    {% endfor %}
-]
+            var data = [
+                {% for array in counts_monthly %}
+                    {
+                        date: new Date({{ array.name.year }}, {{ array.name.month }}, 1).getTime(),
+                        value: {{ array.count }},
+                        bullet: true
+                    },
+                {% endfor %}
+            ]
 
 
-
-
-series.data.setAll(data);
+            series.data.setAll(data);
 
 
 // Make stuff animate on load
 // https://www.amcharts.com/docs/v5/concepts/animations/
-series.appear(1000);
-chart.appear(1000, 100);
+            series.appear(1000);
+            chart.appear(1000, 100);
 
-}); // end am5.ready()
-</script>
+        }); // end am5.ready()
+    </script>
+
+    <!-- Hashtags by current day -->
+    <script>
+        am5.ready(function () {
+
+// Create root element
+// https://www.amcharts.com/docs/v5/getting-started/#Root_element
+            var root = am5.Root.new("daily_treemap");
+
+// Set themes
+// https://www.amcharts.com/docs/v5/concepts/themes/
+            root.setThemes([
+                am5themes_Animated.new(root)
+            ]);
+
+// Create wrapper container
+            var container = root.container.children.push(
+                am5.Container.new(root, {
+                    width: am5.percent(100),
+                    height: am5.percent(100),
+                    layout: root.verticalLayout
+                })
+            );
+
+// Create series
+// https://www.amcharts.com/docs/v5/charts/hierarchy/#Adding
+            var series = container.children.push(
+                am5hierarchy.Treemap.new(root, {
+                    singleBranchOnly: false,
+                    downDepth: 1,
+                    upDepth: -1,
+                    initialDepth: 2,
+                    valueField: "value",
+                    categoryField: "name",
+                    childDataField: "children",
+                    nodePaddingOuter: 0,
+                    nodePaddingInner: 0
+                })
+            );
+
+            series.rectangles.template.setAll({
+                strokeWidth: 2
+            });
+
+// Generate and set data
+// https://www.amcharts.com/docs/v5/charts/hierarchy/#Setting_data
+            var maxLevels = 2;
+            var maxNodes = 10;
+            var maxValue = 100;
 
 
+            var data = {
+                name: "Root",
+                children: [
+                    {% for array in daily_hashtags %}
+                        {
+                            children: [
+                                {
+                                    name: '{{ array.id }}',
+                                    value: {{ array.count }}
+                                }
+                            ]
+                        },
+                    {% endfor %}
+                ]
+            };
+
+
+            series.data.setAll([data]);
+            series.set("selectedDataItem", series.dataItems[0]);
+
+// Make stuff animate on load
+            series.appear(1000, 100);
+
+        }); // end am5.ready()
+    </script>
+
+    <!-- Hashtags by all -->
+    <script>
+        am5.ready(function () {
+
+// Create root element
+// https://www.amcharts.com/docs/v5/getting-started/#Root_element
+            var root = am5.Root.new("all_tree");
+
+// Set themes
+// https://www.amcharts.com/docs/v5/concepts/themes/
+            root.setThemes([
+                am5themes_Animated.new(root)
+            ]);
+
+// Create wrapper container
+            var container = root.container.children.push(
+                am5.Container.new(root, {
+                    width: am5.percent(100),
+                    height: am5.percent(100),
+                    layout: root.verticalLayout
+                })
+            );
+
+// Create series
+// https://www.amcharts.com/docs/v5/charts/hierarchy/#Adding
+            var series = container.children.push(
+                am5hierarchy.Treemap.new(root, {
+                    singleBranchOnly: false,
+                    downDepth: 1,
+                    upDepth: -1,
+                    initialDepth: 2,
+                    valueField: "value",
+                    categoryField: "name",
+                    childDataField: "children",
+                    nodePaddingOuter: 0,
+                    nodePaddingInner: 0
+                })
+            );
+
+            series.rectangles.template.setAll({
+                strokeWidth: 2
+            });
+
+// Generate and set data
+// https://www.amcharts.com/docs/v5/charts/hierarchy/#Setting_data
+            var maxLevels = 2;
+            var maxNodes = 10;
+            var maxValue = 100;
+
+
+            var data = {
+                name: "Root",
+                children: [
+                    {% for array in all_hashtags %}
+                        {
+                            children: [
+                                {
+                                    name: '{{ array.id }}',
+                                    value: {{ array.count }}
+                                }
+                            ]
+                        },
+                    {% endfor %}
+                ]
+            };
+
+
+            series.data.setAll([data]);
+            series.set("selectedDataItem", series.dataItems[0]);
+
+// Make stuff animate on load
+            series.appear(1000, 100);
+
+        }); // end am5.ready()
+    </script>
 
 {% endblock javascripts %}
