@@ -37,6 +37,9 @@ class Tweet(djongo_models.Model):
 
     objects = djongo_models.DjongoManager()
 
+    def get_fields(self):
+        return [(field.name, field.value_to_string(self)) for field in Tweet._meta.fields]
+
     class Meta:
         managed = True
         db_table = "tweets"

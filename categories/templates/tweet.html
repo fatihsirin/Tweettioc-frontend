@@ -1,0 +1,176 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Dashboard {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/hierarchy.js"></script>
+
+    <style type="text/css">
+        #daily {
+            width: 100%;
+            height: 100%;
+        }
+
+        #totaliocs {
+            width: 100%;
+            height: 100%;
+        }
+
+        blockquote {
+            text-align: center;
+            width: auto;
+            display: table
+        }
+
+    </style>
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-lg-6 col-lg-6">
+            <div class="card ">
+                <div class="card-header">
+                    <h4 class="card-title"> Last 5 Entries </h4>
+                </div>
+                <div class="card-body">
+                    <div class="table table-responsive">
+                        <table style="table-layout: fixed; width: 100%;">
+                            <tr>
+                                <td style="width: 20%;">
+                                <th>Tweet Details</th>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>NAME</th>
+                                <td>{{ tweet.name }}</td>
+                            </tr>
+                            <tr>
+                                <th>USERNAME</th>
+                                <td>{{ tweet.username }}</td>
+                            </tr>
+                            <tr>
+                                <th>TWEET</th>
+                                <td>{{ tweet.text }}</td>
+                            </tr>
+                            <tr>
+                                <th>DATE</th>
+                                <td>{{ tweet.postdate }}</td>
+                            </tr>
+                            <tr>
+                                <th>LINK</th>
+                                <td>{{ tweet.link }}</td>
+                            </tr>
+
+                            {% if tweet.hashtags %}
+                                <tr>
+                                    <th>HASHTAGS</th>
+                                    {% for value in tweet.hashtags %}
+                                        <td style="display:block">{{ value }}</td>
+                                    {% endfor %}
+                                </tr>
+                            {% endif %}
+                            <tr>
+                                <td>
+                                <th>IOCs</th>
+                                </td>
+                            </tr>
+                            {% if tweet.reference %}
+                                <tr>
+                                    <th>REFERENCE</th>
+                                    {% for value in tweet.reference %}
+                                        <td style="display:block">{{ value }}</td>
+                                    {% endfor %}
+                                </tr>
+                            {% endif %}
+                            {% if tweet.md5 %}
+                                <tr>
+                                    <th>MD5</th>
+                                    {% for value in tweet.md5 %}
+                                        <td style="display:block">{{ value }}</td>
+                                    {% endfor %}
+                                </tr>
+                            {% endif %}
+                            {% if tweet.sha1 %}
+                                <tr>
+                                    <th>SHA1</th>
+                                    {% for value in tweet.sha1 %}
+                                        <td style="display:block">{{ value }}</td>
+                                    {% endfor %}
+                                </tr>
+                            {% endif %}
+                            {% if tweet.sha256 %}
+                                <tr>
+                                    <th>SHA256</th>
+                                    {% for value in tweet.sha256 %}
+                                        <td style="display:block">{{ value }}</td>
+                                    {% endfor %}
+                                </tr>
+                            {% endif %}
+                            {% if tweet.ip %}
+                                <tr>
+                                    <th>IP</th>
+                                    {% for value in tweet.ip %}
+                                        <td style="display:block">{{ value }}</td>
+                                    {% endfor %}
+                                </tr>
+                            {% endif %}
+                            {% if tweet.domain %}
+                                <tr>
+                                    <th>DOMAIN</th>
+                                    {% for value in tweet.domain %}
+                                        <td style="display:block">{{ value }}</td>
+                                    {% endfor %}
+                                </tr>
+                            {% endif %}
+                            {% if tweet.url %}
+                                <tr>
+                                    <th>URL</th>
+                                    {% for value in tweet.url %}
+                                        <td style="display:block">{{ value }}</td>
+                                    {% endfor %}
+                                </tr>
+                            {% endif %}
+                            {% if tweet.mail %}
+                                <tr>
+                                    <th>MAIL</th>
+                                    {% for value in tweet.mail %}
+                                        <td style="display:block">{{ value }}</td>
+                                    {% endfor %}
+                                </tr>
+                            {% endif %}
+
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-lg-6">
+            <div class="card ">
+                <div class="card-header">
+                    <h4 class="card-title"> Tweet </h4>
+                </div>
+                <div style="text-align: center;" class="card-body">
+                    <blockquote class="twitter-tweet">
+                        <a href="{{ tweet.link }}"></a>
+                    </blockquote>
+                    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+
+{% endblock javascripts %}

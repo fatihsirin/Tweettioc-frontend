@@ -32,50 +32,56 @@
 {% block content %}
 
     <div class="row">
-        <div class="col-lg-12 col-md-12">
-            <div class="card ">
-                <div class="card-header">
-                    <h4 class="card-title"> Last 5 Entries </h4>
-                </div>
-                <div class="card-body">
-                    <div class="places-buttons">
-                        <div class="row">
-                            <div class="col-lg-12 ml-auto mr-auto">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <button class="btn btn-primary btn-block"
-                                                onclick="demo.showNotification('bottom','left')">Bottom Left
-                                        </button>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <button class="btn btn-primary btn-block"
-                                                onclick="demo.showNotification('bottom','center')">Bottom Center
-                                        </button>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <button class="btn btn-primary btn-block"
-                                                onclick="demo.showNotification('bottom','right')">Bottom Right
-                                        </button>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <button class="btn btn-primary btn-block"
-                                                onclick="demo.showNotification('bottom','right')">Bottom Right
-                                        </button>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <button class="btn btn-primary btn-block"
-                                                onclick="demo.showNotification('bottom','right')">Bottom Right
-                                        </button>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <button class="btn btn-primary btn-block"
-                                                onclick="demo.showNotification('bottom','right')">Bottom Right
-                                        </button>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <button class="btn btn-primary btn-block"
-                                                onclick="demo.showNotification('bottom','right')">Bottom Right
-                                        </button>
+            <div class="col-lg-12 col-md-12">
+                <div class="card ">
+                    <div class="card-header">
+                        <h4 class="card-title"> Last 5 Entries </h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="places-buttons">
+                            <div class="row">
+                                <div class="col-lg-12 ml-auto mr-auto">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <button class="button-80 btn btn-primary btn-block"
+                                                    onclick='window.location.href="{% url 'home' %}"'>Home
+                                            </button>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button class="button-80 btn btn-primary btn-block"
+                                                    onclick='window.location.href="{% url 'categories' %}md5"'>MD5
+                                            </button>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button class="button-80 btn btn-primary btn-block"
+                                                    onclick='window.location.href="{% url 'categories' %}sha1"'>SHA1
+                                            </button>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button class="button-80 btn btn-primary btn-block"
+                                                    onclick='window.location.href="{% url 'categories' %}sha256"'>SHA256
+                                            </button>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button class="button-80 btn btn-primary btn-block"
+                                                    onclick='window.location.href="{% url 'categories' %}ip"'>IP
+                                            </button>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button class="button-80 btn btn-primary btn-block"
+                                                    onclick='window.location.href="{% url 'categories' %}domain"'>DOMAIN
+                                            </button>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button class="button-80 btn btn-primary btn-block"
+                                                    onclick='window.location.href="{% url 'categories' %}url"'>URL
+                                            </button>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button class="button-80 btn btn-primary btn-block"
+                                                    onclick='window.location.href="{% url 'categories' %}mail"'>MAIL
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -84,7 +90,6 @@
                 </div>
             </div>
         </div>
-    </div>
     <div class="row">
         <div class="col-12">
             <div class="card card-chart">
@@ -182,7 +187,7 @@
                                 <tr>
                                     <td>{{ forloop.counter }}</td>
                                     <td>{{ obj.username }}</td>
-                                    <td><a href="./list/id/">{{ obj.text }}</a></td>
+                                    <td><a href="{% url 'tweet' %}{{ obj.tweet_id }}">{{ obj.text }}</a></td>
                                     <td>{{ obj.date }}</td>
                                 </tr>
                             {% endfor %}

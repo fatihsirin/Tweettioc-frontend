@@ -12,6 +12,8 @@ from categories import views
 urlpatterns = [
     # Matches any html file
     path('testing',views.categories, name="testing"),
-    path('categories', views.categories, name='controlserver'),
-    path('categories/<str:type>/', views.categories, name='controlserverr'),
+    path('categories/', views.categories, name='categories'),
+    path('categories/<str:type>/', views.categories, name='categories_type'),
+    path('tweet/', views.tweet, name='tweet'),
+    path('tweet/<str:tweetid>/', views.tweet, name='tweet_detail'),
 ]

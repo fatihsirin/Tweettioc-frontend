@@ -30,7 +30,7 @@ def index(request):
     daily_hashtags = Dashboard.objects.filter(type="hashtagsDaily").order_by("-date")[0].data
     all_hashtags = Dashboard.objects.filter(type="hashtagsAll").order_by("-date")[0].data
 
-    object_list = Tweet.objects.filter(date__gt=datetime.datetime.now() - datetime.timedelta(days=1),
+    object_list = Tweet.objects.filter(date__gt=datetime.datetime.now() - datetime.timedelta(days=3),
                                        date__lt=datetime.datetime.now()).order_by('-date')
     object_list = list(object_list)
 
