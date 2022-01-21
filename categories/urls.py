@@ -16,4 +16,7 @@ urlpatterns = [
     path('categories/<str:type>/', views.categories, name='categories_type'),
     path('tweet/', views.tweet, name='tweet'),
     path('tweet/<str:tweetid>/', views.tweet, name='tweet_detail'),
+
+    path('user/', views.user_dashboard, name='user_dashboard'),
+    path('user/<str:username>/', views.user_dashboard, name='user_dashboard'),
 ]

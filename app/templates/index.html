@@ -186,7 +186,8 @@
                             {% for obj in object_list %}
                                 <tr>
                                     <td>{{ forloop.counter }}</td>
-                                    <td>{{ obj.username }}</td>
+
+                                    <td><a href="{% url 'user_dashboard' %}{{ obj.username}}">{{ obj.username }}</a></td>
                                     <td><a href="{% url 'tweet' %}{{ obj.tweet_id }}">{{ obj.text }}</a></td>
                                     <td>{{ obj.date }}</td>
                                 </tr>
@@ -203,8 +204,6 @@
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
-
-
     <!-- Total IOC Types Counts -->
     <script>
         am5.ready(function () {
@@ -246,7 +245,7 @@
 
             var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
                 maxDeviation: 0.3,
-                categoryField: "country",
+                categoryField: "name",
                 renderer: xRenderer,
                 tooltip: am5.Tooltip.new(root, {})
             }));
@@ -265,7 +264,7 @@
                 yAxis: yAxis,
                 valueYField: "value",
                 sequencedInterpolation: true,
-                categoryXField: "country",
+                categoryXField: "name",
                 tooltip: am5.Tooltip.new(root, {
                     labelText: "{valueY}"
                 })
@@ -285,7 +284,7 @@
             var data = [
                 {% for key, values in iocCounts.items %}
                     {
-                        country: '{{ key }}',
+                        name: '{{ key }}',
                         value: {{ values }}
                     },
                 {% endfor %}
@@ -303,7 +302,7 @@
         }); // end am5.ready()
     </script>
 
-    <!-- Days IOC Counts -->
+    <!-- Daily IOC Counts -->
     <script>
         am5.ready(function () {
 
@@ -432,7 +431,7 @@
         }); // end am5.ready()
     </script>
 
-    <!-- Week Days IOC Counts -->
+    <!-- Days IOC Counts -->
     <script>
         am5.ready(function () {
 

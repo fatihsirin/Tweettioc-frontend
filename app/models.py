@@ -57,3 +57,16 @@ class Dashboard(djongo_models.Model):
     class Meta:
         managed = True
         db_table = "dashboards"
+
+
+class TwitterProfile(djongo_models.Model):
+    id = djongo_models.BigIntegerField(primary_key=True, db_column="_id")
+    username = djongo_models.TextField(db_column="username")
+    photo = ArrayField(models.TextField(), db_column="photo")
+    date = djongo_models.DateTimeField(db_column="date")
+
+    objects = djongo_models.DjongoManager()
+
+    class Meta:
+        managed = True
+        db_table = "twitterprofiles"
