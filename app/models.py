@@ -69,4 +69,4 @@ class TwitterProfile(djongo_models.Model):
 
     class Meta:
         managed = True
-        db_table = "twitterprofiles"
+        db_table = "researcher"

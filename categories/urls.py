@@ -17,6 +17,6 @@ urlpatterns = [
     path('tweet/', views.tweet, name='tweet'),
     path('tweet/<str:tweetid>/', views.tweet, name='tweet_detail'),
 
-    path('user/', views.user_dashboard, name='user_dashboard'),
-    path('user/<str:username>/', views.user_dashboard, name='user_dashboard'),
+    path('researcher/', views.researcher_dashboard, name='researcher_dashboard'),
+    path('researcher/<str:username>/', views.researcher_dashboard, name='researcher_dashboard'),
 ]

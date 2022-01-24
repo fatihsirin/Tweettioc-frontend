@@ -38,7 +38,7 @@ def categories(request, type=None):
 
                     }},
                 {
-                    "$sort": {"_id.date": +1}
+                    "$sort": {"_id.date": -1}
                 },
                 {
                     "$limit": 100
@@ -53,8 +53,6 @@ def categories(request, type=None):
         ioc_type = ""
         iocCounts = Dashboard.objects.filter(type="iocCounts").order_by("-date")[0]
         iocCounts = iocCounts.data[0]
-
-    print("")
 
     return render(request,
                   "categories.html",
@@ -79,71 +77,81 @@ def tweet(request, tweetid=None):
 
 
 @login_required(login_url="/login/")
-def user_dashboard(request, username=""):
-    counts_days = [
-        {
-            "$match": {"username": "TeamDreier"},
-        },
-        {
-            "$project": {
-                "_id": 1,
-                "date": {"$dateToString": {"format": "%Y-%m-%d", "date": "$date"}},
+def researcher_dashboard(request, username=""):
+    user_info = TwitterProfile.objects.filter(username=username)
+    if user_info:
+        user_info = user_info[0]
+        if user_info:
+            counts_days = [
+                {
+                    "$match": {"username": username},
+                },
+                {
+                    "$project": {
+                        "_id": 1,
+                        "date": {"$dateToString": {"format": "%Y-%m-%d", "date": "$date"}},
 
-            }
-        },
-        {"$group": {
-            "_id": {"date": "$date"},
-            "count": {"$sum": 1}}
-        },
-        {"$project": {
-            "name": "$_id",
-            "count": 1,
-            "_id": 0}
-        },
+                    }
+                },
+                {"$group": {
+                    "_id": {"date": "$date"},
+                    "count": {"$sum": 1}}
+                },
+                {"$project": {
+                    "name": "$_id",
+                    "count": 1,
+                    "_id": 0}
+                },
 
-        {
-            "$sort": {"name.date": -1}
-        },
-        {
-            "$limit": 10
-        }
-    ]
-    counts_days = list(Tweet.objects.mongo_aggregate(counts_days))
+                {
+                    "$sort": {"name.date": -1}
+                },
+                {
+                    "$limit": 100
+                }
+            ]
+            counts_days = list(Tweet.objects.mongo_aggregate(counts_days))
 
-    counts_ioctypes = [
-        {
-            "$match": {"username": username},
-        },
-        {
-            "$group": {
-                "_id": 0,
-                "md5": {"$addToSet": "$md5"},
-                "sha1": {"$addToSet": "$sha1"},
-                "sha256": {"$addToSet": "$sha256"},
-                "ip": {"$addToSet": "$ip"},
-                "domain": {"$addToSet": "$domain"},
-                "url": {"$addToSet": "$url"},
-                "mail": {"$addToSet": "$mail"}
-            }
-        },
-        {
-            "$project": {
-                "_id": 0,
-                "md5": {"$size": "$md5"},
-                "sha1": {"$size": "$sha1"},
-                "sha256": {"$size": "$sha256"},
-                "ip": {"$size": "$ip"},
-                "domain": {"$size": "$domain"},
-                "url": {"$size": "$url"},
-                "mail": {"$size": "$mail"}
-            }
-        }
-    ]
-    counts_ioctypes = list(Tweet.objects.mongo_aggregate(counts_ioctypes))[0]
+            counts_ioctypes = [
+                {
+                    "$match": {"username": username},
+                },
+                {
+                    "$group": {
+                        "_id": 0,
+                        "md5": {"$addToSet": "$md5"},
+                        "sha1": {"$addToSet": "$sha1"},
+                        "sha256": {"$addToSet": "$sha256"},
+                        "ip": {"$addToSet": "$ip"},
+                        "domain": {"$addToSet": "$domain"},
+                        "url": {"$addToSet": "$url"},
+                        "mail": {"$addToSet": "$mail"}
+                    }
+                },
+                {
+                    "$project": {
+                        "_id": 0,
+                        "md5": {"$size": "$md5"},
+                        "sha1": {"$size": "$sha1"},
+                        "sha256": {"$size": "$sha256"},
+                        "ip": {"$size": "$ip"},
+                        "domain": {"$size": "$domain"},
+                        "url": {"$size": "$url"},
+                        "mail": {"$size": "$mail"}
+                    }
+                }
+            ]
+            counts_ioctypes = list(Tweet.objects.mongo_aggregate(counts_ioctypes))[0]
 
-    user_info = TwitterProfile.objects.filter(username=username).get()
+            tweets = Tweet.objects.filter(username=username).order_by('-date')[:500]
+            tweets = list(tweets)
 
-    tweets = Tweet.objects.filter(username=username).order_by('-date')[:500]
-    tweets = list(tweets)
+            return render(request, "researcher.html", locals())
+    else:
+        username = ""
+        Dashboard.objects.filter(type="researchersYearly").order_by("-date")[0].data
+        researchersDaily = Dashboard.objects.filter(type="researchersDaily").order_by("-date")[0].data
+        researchersMonthly = Dashboard.objects.filter(type="researchersMonthly").order_by("-date")[0].data
+        researchersYearly = Dashboard.objects.filter(type="researchersYearly").order_by("-date")[0].data
+        return render(request, "researcher.html", locals())
 
-    return render(request, "user_details.html", locals())

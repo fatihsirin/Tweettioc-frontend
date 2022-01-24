@@ -11,12 +11,14 @@ from django.http import HttpResponse
 from django import template
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import JsonResponse
+from django.views.decorators.cache import cache_page
 
 import datetime
 
 from app.models import *
 
 
+#@cache_page(60 * 15)
 @login_required(login_url="/login/")
 def index(request):
     # user_tweets = Tweet.objects.filter(date__gt=datetime.datetime.strptime("2021-12-25", "%Y-%m-%d"),
@@ -91,28 +93,12 @@ def pages(request):
 #     return render(request, "tablessss.html",{'iocs': testIOC})
 
 
+
 @login_required(login_url="/login/")
 def entries(request):
 
-    object_list = Tweet.objects.filter(date__gt=datetime.datetime.now() - datetime.timedelta(days=50),
-                                       date__lt=datetime.datetime.now()).order_by('date')
-
-
-    paginator = Paginator(object_list, 1000)
-    page = request.GET.get('page', 1)
-    try:
-        page_obj = paginator.page(page)
-    except PageNotAnInteger:
-        page_obj = paginator.page(1)
-    except EmptyPage:
-        page_obj = paginator.page(paginator.num_pages)
-
-    page_range = paginator.get_elided_page_range(page, on_each_side=3, on_ends=3)
-    context = {
-        'page_obj': page_obj, 'page_range': page_range,
-        'page': page, 'paginator': paginator,
-    }
-
+    object_list = Tweet.objects.filter(date__gt=datetime.datetime.now() - datetime.timedelta(days=30),
+                                       date__lt=datetime.datetime.now()).order_by('date')[:250]
     return render(request,
                   "tables.html",
-                  context)
+                  locals())

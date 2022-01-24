@@ -26,11 +26,11 @@
                             <th>Date</th>
                             </thead>
                             <tbody>
-                            {% for obj in page_obj %}
+                            {% for obj in object_list %}
                                 <tr>
                                     <td>{{ forloop.counter }}</td>
-                                    <td>{{ obj.username }}</td>
-                                    <td><a href="./list/id/">{{ obj.text }}</a></td>
+                                    <td><a href="{% url 'researcher_dashboard' %}{{ obj.username}}">{{ obj.username }}</a></td>
+                                    <td><a href="{% url 'tweet' %}{{ obj.tweet_id }}">{{ obj.text }}</a></td>
                                     <td>{{ obj.date }}</td>
                                 </tr>
                             {% endfor %}

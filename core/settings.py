@@ -9,8 +9,6 @@ from decouple import config
 from unipath import Path
 import dj_database_url
 
-
-
 import warnings
 
 # disable warning messages
@@ -43,15 +41,26 @@ INSTALLED_APPS = [
     'categories',
 ]
 
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+#         'LOCATION': '/Users/fsirin/PycharmProjects/Django-Dashboard-master/cache',
+#         'TIMEOUT': 60,
+#     }
+# }
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+
 ]
 
 ROOT_URLCONF = 'core.urls'

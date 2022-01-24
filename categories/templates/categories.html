@@ -60,7 +60,7 @@
                                     <tr>
                                         <td>{{ forloop.counter }}</td>
                                         <td><a href="{% url 'tweet' %}{{ obj.id.tweet_id }}">{{ obj.id.ioc }}</a></td>
-                                        <td><a href="./list/id/{{ obj.id.tweet_id }}">{{ obj.id.username }}</a></td>
+                                        <td><a href="{% url 'researcher_dashboard' %}{{ obj.id.username }}">{{ obj.id.username }}</a></td>
                                         <td>{{ obj.id.date }}</td>
                                     </tr>
                                 {% endfor %}
