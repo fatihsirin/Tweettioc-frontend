@@ -11,14 +11,12 @@ from django.http import HttpResponse
 from django import template
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import JsonResponse
-from django.views.decorators.cache import cache_page
 
 import datetime
 
 from app.models import *
 
 
-#@cache_page(60 * 15)
 @login_required(login_url="/login/")
 def index(request):
     # user_tweets = Tweet.objects.filter(date__gt=datetime.datetime.strptime("2021-12-25", "%Y-%m-%d"),
@@ -78,27 +76,11 @@ def pages(request):
         return HttpResponse(html_template.render(context, request))
 
 
-# @login_required(login_url="/login/")
-# def tables(request):
-#     testIOC = ioc.find({'tweet.date': {'$lt': datetime.datetime.now(), '$gt': datetime.datetime.now() - datetime.timedelta(days=50)}}
-#                        , sort=[('tweet.date', pymongo.DESCENDING)]).limit(200)
-#
-#     counts = {}
-#     if ioc.find_one():
-#         for name, value in ioc.find_one().items():
-#             counts[name] = 0
-#             for x in ioc.find({name: {"$regex": ".+"}}):
-#                 counts[name] += len(x[name])
-#
-#     return render(request, "tablessss.html",{'iocs': testIOC})
-
-
-
 @login_required(login_url="/login/")
 def entries(request):
 
     object_list = Tweet.objects.filter(date__gt=datetime.datetime.now() - datetime.timedelta(days=30),
-                                       date__lt=datetime.datetime.now()).order_by('date')[:250]
+                                       date__lt=datetime.datetime.now()).order_by('-date')[:500]
     return render(request,
                   "tables.html",
                   locals())

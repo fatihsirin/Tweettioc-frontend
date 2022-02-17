@@ -36,10 +36,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
     'app',  # Enable the inner app
     'djongo.dynamic_formsets.apps.DynamicFormsetsConfig',
     'categories',
+    'navigation',
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
 
 # CACHES = {
 #     'default': {
@@ -70,6 +75,7 @@ TEMPLATE_DIR = [
     os.path.join(BASE_DIR, "core/templates"),
     os.path.join(BASE_DIR, "app/templates"),
     os.path.join(BASE_DIR, "categories/templates"),
+    os.path.join(BASE_DIR, "navigation/templates"),
 ]  # ROOT dir for templates
 
 TEMPLATES = [

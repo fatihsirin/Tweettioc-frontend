@@ -8,7 +8,7 @@
     <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <style type="text/css">
         #daily {
             width: 100%;
@@ -54,11 +54,9 @@
             <div class="col-12">
                 <div class="card card-chart">
                     <div class="card-header ">
-                        <div class="row">
-                            <div class="col-sm-6 text-left">
-                                <h5 class="card-category"></h5>
-                                <h2 class="card-title">IOC Counts</h2>
-                            </div>
+                        <div class="col-sm-6 text-left">
+                            <h5 class="card-category"></h5>
+                            <h2 class="card-title">IOC Counts</h2>
                         </div>
                     </div>
                     <div class="card-body">
@@ -102,31 +100,26 @@
                         <p class="description">
                             Threat Intelligence Analyst
                         </p>
-                    </div>
-                    </p>
-                    <div class="card-description">
-
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <div class="button-container">
-                        <button onclick='window.location="https://twitter.com/{{ user.username }}"'
+                        <button onclick='window.location="https://twitter.com/{{ object_list.0.username }}"'
                                 class="btn btn-icon btn-round btn-twitter">
                             <i class="fab fa-twitter"></i>
                         </button>
                     </div>
+                    </p>
+                    <div class="card-description">
+                    </div>
+                    </div>
                 </div>
             </div>
-        </div>
         <div class="row">
-            <div class="col-lg-12 col-md-12">
+            <div class="col-md-12">
                 <div class="card ">
                     <div class="card-header">
                         <h4 class="card-title"> Last 5 Entries </h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table tablesorter display " id="table_id">
+                            <table style="table-layout: fixed; width: 100%;" class="table tablesorter display " id="table_id">
                                 <thead class="">
                                 <th>ID</th>
                                 <th>User</th>
@@ -134,10 +127,11 @@
                                 <th>Date</th>
                                 </thead>
                                 <tbody>
-                                {% for obj in tweets %}
+                                {% for obj in object_list %}
                                     <tr>
                                         <td>{{ forloop.counter }}</td>
-                                        <td>{{ obj.username }}</td>
+                                        <td><a href="{% url 'researcher_dashboard' %}{{ obj.username }}">{{ obj.username }}</a>
+                                        </td>
                                         <td><a href="{% url 'tweet' %}{{ obj.tweet_id }}">{{ obj.text }}</a></td>
                                         <td>{{ obj.date }}</td>
                                     </tr>
@@ -149,6 +143,7 @@
                 </div>
             </div>
         </div>
+
     {% else %}
         <h4 class="card-title"> Infosec people that post IOCs on Twitter</h4>
         <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
@@ -193,15 +188,24 @@
                                     <tr>
                                         <td>{{ forloop.counter }}</td>
                                         <td><a style="text-decoration: none;color: blue;" target="_blank"
-                                               href="https://twitter.com/pingineer_jp"><img src="{{ obj.photo }}"
+                                               href="https://twitter.com/{{ obj.username }}"><img src="{{ obj.photo }}"
                                                                                             style="border-radius: 50%"
                                                                                             width="40" height="40"></a>
                                         </td>
-                                        <td><a target="_blank" class="btn btn-primary buttonHover"
-                                               style="color:white;font-size: 13px;background-color: #00acee;border: 1px solid black;font-family: 'Rubik', sans-serif;font-weight: 400;"
+                                        <td>
+                                            <a target="_blank" class="btn btn-primary buttonHover"
+                                               style="border-radius: 50px;border: 1px solid white;"
                                                href="https://twitter.com/{{ obj.username }}"><i
-                                                class="fab fa-twitter"></i> <span
-                                                class="pb-2 align-middle">{{ obj.username }}</span></a></td>
+                                                    class="fab fa-twitter"></i> <span
+                                                    class="pb-2 align-middle">{{ obj.username }}</span>
+                                            </a>
+                                            <a target="_blank" class="btn btn-primary buttonHover"
+                                               style="border-radius: 50px;border: 1px solid white;"
+                                               href="{% url 'researcher_dashboard' %}{{ obj.username }}"><i
+                                                    class="tim-icons icon-badge"></i> <span
+                                                    class="pb-2 align-middle">View</span>
+                                            </a>
+                                        </td>
                                         <td>{{ obj.count }}</td>
                                     </tr>
                                 {% endfor %}
@@ -230,15 +234,24 @@
                                     <tr>
                                         <td>{{ forloop.counter }}</td>
                                         <td><a style="text-decoration: none;color: blue;" target="_blank"
-                                               href="https://twitter.com/pingineer_jp"><img src="{{ obj.photo }}"
+                                               href="https://twitter.com/{{ obj.username }}"><img src="{{ obj.photo }}"
                                                                                             style="border-radius: 50%"
                                                                                             width="40" height="40"></a>
                                         </td>
-                                        <td><a target="_blank" class="btn btn-primary buttonHover"
-                                               style="color:white;font-size: 13px;background-color: #00acee;border: 1px solid black;font-family: 'Rubik', sans-serif;font-weight: 400;"
+                                        <td>
+                                            <a target="_blank" class="btn btn-primary buttonHover"
+                                               style="border-radius: 50px;border: 1px solid white;"
                                                href="https://twitter.com/{{ obj.username }}"><i
-                                                class="fab fa-twitter"></i> <span
-                                                class="pb-2 align-middle">{{ obj.username }}</span></a></td>
+                                                    class="fab fa-twitter"></i> <span
+                                                    class="pb-2 align-middle">{{ obj.username }}</span>
+                                            </a>
+                                            <a target="_blank" class="btn btn-primary buttonHover"
+                                               style="border-radius: 50px;border: 1px solid white;"
+                                               href="{% url 'researcher_dashboard' %}{{ obj.username }}"><i
+                                                    class="tim-icons icon-badge"></i> <span
+                                                    class="pb-2 align-middle">View</span>
+                                            </a>
+                                        </td>
                                         <td>{{ obj.count }}</td>
                                     </tr>
                                 {% endfor %}
@@ -268,15 +281,24 @@
                                     <tr>
                                         <td>{{ forloop.counter }}</td>
                                         <td><a style="text-decoration: none;color: blue;" target="_blank"
-                                               href="https://twitter.com/pingineer_jp"><img src="{{ obj.photo }}"
+                                               href="https://twitter.com/{{ obj.username }}"><img src="{{ obj.photo }}"
                                                                                             style="border-radius: 50%"
                                                                                             width="40" height="40"></a>
                                         </td>
-                                        <td><a target="_blank" class="btn btn-primary buttonHover"
-                                               style="color:white;font-size: 13px;background-color: #00acee;border: 1px solid black;font-family: 'Rubik', sans-serif;font-weight: 400;"
+                                        <td>
+                                            <a target="_blank" class="btn btn-primary buttonHover"
+                                               style="border-radius: 50px;border: 1px solid white;"
                                                href="https://twitter.com/{{ obj.username }}"><i
-                                                class="fab fa-twitter"></i> <span
-                                                class="pb-2 align-middle">{{ obj.username }}</span></a></td>
+                                                    class="fab fa-twitter"></i> <span
+                                                    class="pb-2 align-middle">{{ obj.username }}</span>
+                                            </a>
+                                            <a target="_blank" class="btn btn-primary buttonHover"
+                                               style="border-radius: 50px;border: 1px solid white;"
+                                               href="{% url 'researcher_dashboard' %}{{ obj.username }}"><i
+                                                    class="tim-icons icon-badge"></i> <span
+                                                    class="pb-2 align-middle">View</span>
+                                            </a>
+                                        </td>
                                         <td>{{ obj.count }}</td>
                                     </tr>
                                 {% endfor %}
@@ -531,6 +553,18 @@
             src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js">
     </script>
     <script>
+
+        let table = new DataTable('#table_id', {
+            // options
+            "columnDefs": [
+                {"width": '1%', "targets": 0},
+                {"width": '10%', "targets": 1},
+                {"width": '75%', "targets": 2},
+            ],
+            responsive: true,
+            nowrap: true,
+            "lengthMenu": [[10, 10], [10, 20,]]
+        });
         let table1 = new DataTable('#table_id1', {
             // options
             "columnDefs": [

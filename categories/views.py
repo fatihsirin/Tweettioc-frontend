@@ -22,12 +22,12 @@ from app.models import *
 @login_required(login_url="/login/")
 def categories(request, type=None):
     names = ['md5', 'sha1', 'sha256', 'ip', 'domain', 'url', 'mail']
-    if type:
-        if type in names:
-            ioc_type = type
-            data = Dashboard.objects.filter(type=type).order_by("-date")[0].data
-            count_total = Dashboard.objects.filter(type=type).order_by("-date")[0].totalcount
-            query = [
+    # if type:
+    if type in names:
+        ioc_type = type
+        data = Dashboard.objects.filter(type=type).order_by("-date")[0].data
+        count_total = Dashboard.objects.filter(type=type).order_by("-date")[0].totalcount
+        query = [
                 {
                     "$match": {type: {"$regex": ".+"}},
                 },
@@ -48,7 +48,7 @@ def categories(request, type=None):
                         "id": "$_id",
                         "_id": 0}}
             ]
-            iocs = list(Tweet.objects.mongo_aggregate(query))
+        iocs = list(Tweet.objects.mongo_aggregate(query))
     else:
         ioc_type = ""
         iocCounts = Dashboard.objects.filter(type="iocCounts").order_by("-date")[0]
@@ -143,8 +143,8 @@ def researcher_dashboard(request, username=""):
             ]
             counts_ioctypes = list(Tweet.objects.mongo_aggregate(counts_ioctypes))[0]
 
-            tweets = Tweet.objects.filter(username=username).order_by('-date')[:500]
-            tweets = list(tweets)
+            object_list = Tweet.objects.filter(username=username).order_by('-date')[:500]
+            object_list = list(object_list)
 
             return render(request, "researcher.html", locals())
     else:

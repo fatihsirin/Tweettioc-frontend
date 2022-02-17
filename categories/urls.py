@@ -11,7 +11,7 @@ from categories import views
 
 urlpatterns = [
     # Matches any html file
-    path('testing',views.categories, name="testing"),
+    #path('testing',views.categories, name="testing"),
     path('categories/', views.categories, name='categories'),
     path('categories/<str:type>/', views.categories, name='categories_type'),
     path('tweet/', views.tweet, name='tweet'),

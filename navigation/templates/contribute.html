@@ -1,0 +1,42 @@
+{% extends "layouts/base.html" %}
+{% block title %} Dashboard {% endblock %}
+
+
+{% load crispy_forms_tags %}
+
+{% block stylesheets %}
+    <style type="text/css">
+        #id_content {
+            max-height: 100%;
+            border-style: double;
+        }
+    </style>
+{% endblock stylesheets %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="form-row">
+                    <div style="margin: auto">
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ form|crispy }}
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {% if msg %}
+        <script>
+            window.onload = function MessageFunction() {
+                demo.showNotification("top", "center", "{{ msg }}")
+            }
+        </script>
+    {% endif %}
+{% endblock javascripts %}

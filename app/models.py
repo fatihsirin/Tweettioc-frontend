@@ -48,7 +48,7 @@ class Tweet(djongo_models.Model):
 class Dashboard(djongo_models.Model):
     id = djongo_models.BigIntegerField(primary_key=True, db_column="_id")
     type = djongo_models.TextField(db_column="type")
-    totalcount = djongo_models.BigIntegerField(db_column="totalcount")
+    totalcount = djongo_models.BigIntegerField(db_column="totalcount",null=True)
     data = ArrayField(models.TextField(), db_column="data")
     date = djongo_models.DateTimeField(db_column="date")
 
