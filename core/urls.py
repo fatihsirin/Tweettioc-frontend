@@ -13,4 +13,5 @@ urlpatterns = [
     path("", include("app.urls")),  # add this
     path("", include("categories.urls")),  # add this
     path("", include("navigation.urls")),  # add this
+    path("", include("api.urls")),  # add this
 ]

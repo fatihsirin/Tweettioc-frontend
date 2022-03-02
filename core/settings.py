@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'djongo.dynamic_formsets.apps.DynamicFormsetsConfig',
     'categories',
     'navigation',
+    'rest_framework',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -166,3 +167,8 @@ STATICFILES_DIRS = (
 )
 #############################################################
 #############################################################
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 100
+}
