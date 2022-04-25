@@ -11,7 +11,8 @@ from django.http import HttpResponse
 from django import template
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import JsonResponse
-
+from . import *
+import re
 import datetime
 
 from app.models import *
@@ -87,3 +88,29 @@ def entries(request):
     return render(request,
                   "tables.html",
                   locals())
+
+
+@login_required(login_url="/login/")
+def search(request):
+    if request.method == 'POST':
+        q = request.POST["q"]
+        if bool(re.match(md5_patt,q)):
+            object_list = Tweet.objects.filter(md5__icontains=q).order_by('-date')[:500]
+        elif bool(re.match(sha1_patt,q)):
+            object_list = Tweet.objects.filter(sha1__icontains=q).order_by('-date')[:500]
+        elif bool(re.match(sha256_patt,q)):
+            object_list = Tweet.objects.filter(sha256__icontains=q).order_by('-date')[:500]
+        elif bool(re.match(ip_patt,q)):
+            object_list = Tweet.objects.filter(ip__icontains=q).order_by('-date')[:500]
+        elif bool(re.match(domain_patt,q)):
+            object_list = Tweet.objects.filter(domain__icontains=q).order_by('-date')[:500]
+        elif bool(re.match(mail_addr_patt,q)):
+            object_list = Tweet.objects.filter(mail__icontains=q).order_by('-date')[:500]
+        else:
+            object_list = Tweet.objects.filter(text__icontains=q).order_by('-date')[:500]
+
+        #object_list = Tweet.objects.filter(date__gt=datetime.datetime.now() - datetime.timedelta(days=30),
+        #                                   date__lt=datetime.datetime.now()).order_by('-date')[:500]
+        return render(request,
+                      "tables.html",
+                      locals())

@@ -18,7 +18,7 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table tablesorter display " id="table_id">
+                        <table class="table tablesorter display " id="table_id" style="width: auto;">
                             <thead class="">
                             <th>ID</th>
                             <th>User</th>
@@ -51,11 +51,11 @@
     <script>
     let table = new DataTable('#table_id', {
     // options
-    "columnDefs": [
-      { "width": '1%', "targets": 0 },
-      { "width": '10%', "targets": 1 },
-      { "width": '75%', "targets": 2 },
-    ],
+    //"columnDefs": [
+    //  { "width": '1%', "targets": 0 },
+    //  { "width": '10%', "targets": 1 },
+    //  { "width": '75%', "targets": 2 },
+    //],
     responsive: true,
     nowrap: true,
 

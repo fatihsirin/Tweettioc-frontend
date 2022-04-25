@@ -16,4 +16,5 @@ urlpatterns = [
     # The home page
     path('', views.index, name='home'),
     path('entries',views.entries, name="tweetlist"),
+    path('search',views.search, name="search"),
 ]

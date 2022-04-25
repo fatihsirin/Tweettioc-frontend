@@ -84,7 +84,10 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="SEARCH">
+                <form action="../..{% url 'search' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="text" class="form-control" id="inlineFormInputGroup" name="q" placeholder="SEARCH">
+                </form>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <i class="tim-icons icon-simple-remove"></i>
                 </button>
