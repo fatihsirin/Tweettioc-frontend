@@ -77,7 +77,7 @@ def tweet(request, tweetid=None):
 
 
 @login_required(login_url="/login/")
-def researcher_dashboard(request, username=""):
+def researcher_dashboard(request, username=None):
     user_info = TwitterProfile.objects.filter(username=username)
     if user_info:
         user_info = user_info[0]

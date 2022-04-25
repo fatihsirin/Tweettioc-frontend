@@ -225,11 +225,14 @@
                 panX: true,
                 panY: true,
                 wheelX: "panX",
-                wheelY: "zoomX"
+                wheelY: "zoomX",
+                pinchZoomX:true
             }));
 
 // Add cursor
 // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
+var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {}));
+cursor.lineY.set("visible", false);
 
 
 // Create axes
@@ -430,7 +433,7 @@
         }); // end am5.ready()
     </script>
 
-    <!-- Days IOC Counts -->
+    <!-- Months IOC Counts -->
     <script>
         am5.ready(function () {
 
@@ -452,7 +455,7 @@
                 panX: true,
                 panY: true,
                 wheelX: "panX",
-                wheelY: "zoomX"
+                wheelY: "zoomX",
             }));
 
             chart.get("colors").set("step", 3);
@@ -462,6 +465,7 @@
 // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
             var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {}));
             cursor.lineY.set("visible", false);
+
 
 
 // Create axes

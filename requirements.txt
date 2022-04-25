@@ -9,3 +9,8 @@ dj-database-url
 python-decouple
 gunicorn
 whitenoise
+djongo
+djangorestframework
+django-crispy-forms
+psycopg2-binary
+pymongo==3.12.3
